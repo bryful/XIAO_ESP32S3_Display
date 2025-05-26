@@ -14,10 +14,10 @@ public:
     ~BrySerial()
     {
     }
-    bool CreateHeader(byte *head, String header, uint32_t size);
-    void SendText(String str);
-    void SendBin(String key, uint8_t *data, uint32_t size);
-    bool compHeader(char *head, char *header);
+    bool CreateHeader(byte *head, const char *header, uint32_t size);
+    void SendText(const char *str);
+    void SendBin(const char *key, uint8_t *data, uint32_t size);
+    bool compHeader(const char *head, const char *header);
 };
 
 #endif // FSSERIAL_H

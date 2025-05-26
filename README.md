@@ -30,17 +30,11 @@ lovyan03/LovyanGFX@^1.2.7 を使用
 
 GPIO03を最初使ってましたが、Strapping Pinなので良くないって記事読んだので変えました。<br>
 [https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/)<br>
-データシートはちゃんと読まないとダメですね。
+データシートはちゃんと読まないとダメですね。<br>
 
+<br>
+LovyanGFXのヘッダ読んだらちゃんとバックライト処理があったので修正。<br>
 
-BLをGPI05に繋いでいるが、LovyanGFXだとBLの指定ができなかったので、classのコンストラクタに
-
-```
-pinMode(5, OUTPUT);
-digitalWrite(5, HIGH);
-
-```
-を入れて無理やり使ってる。これが嫌なら3.3Vピンに指せばいい。ただし、バックライトの制御はできなくなる。
 
 ## Dependency
 Visual studio 2022 C#
