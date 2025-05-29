@@ -12,7 +12,7 @@ LGFX_XIAO_ESP32S3_SPI_ST7789 display;
 BrySerial srl;
 FsWifi fsWifi;
 
-static int mmTime = 0;
+static unsigned long mmTime = 0;
 
 void DisplayPrint(const char *str)
 {
@@ -33,8 +33,10 @@ void printLocalTime()
   {
     display.startWrite();
     display.drawBmpFile(LittleFS, "/girl.bmp", 0, 0);
-    display.setCursor(20, 210);
     display.setTextColor(TFT_RED);
+    display.setCursor(20, 0);
+    display.println(WiFi.localIP().toString().c_str());
+    display.setCursor(20, 210);
     display.println(&fsWifi.timeinfo, "%A, %B %d %Y %H:%M:%S");
     display.endWrite();
   }
@@ -86,12 +88,14 @@ void GetSerialCMD()
   {
     char str[] = "XIAO ESP32S3";
     srl.SendBin("info", (uint8_t *)str, strlen(str));
-    // ExtPrintln("Hello!");
+    // DisplayPrint(str);
+    //  ExtPrintln("Hello!");
   }
   else if (srl.compHeader(header, (char *)"rset") == true)
   {
-    DisplayPrint("Resetting...");
-    ESP.restart();
+    DisplayPrint(header);
+    // DisplayPrint("Resetting...");
+    // ESP.restart();
   }
   else if (srl.compHeader(header, (char *)"text") == true)
   {
@@ -108,17 +112,17 @@ void GetSerialCMD()
     int idx = fsu.split(str, ',', dst);
     if (idx >= 2)
     {
-      DisplayPrint("Connecting to WiFi...");
+      // DisplayPrint(String("dst[0]:" + dst[0] + " dst[1]:" + dst[1]).c_str());
+
+      // Serial.println("dst[0]:" + dst[0] + " dst[1]:" + dst[1]);
       if (fsWifi.Begin(dst[0].c_str(), dst[1].c_str()))
       {
         printLocalTime();
-        String str = String("WiFi connected! ip:") + WiFi.localIP().toString();
-        srl.SendText(str.c_str());
-        DisplayPrint(WiFi.localIP().toString().c_str());
+        // srl.SendText("WiFi connection failed!");
       }
       else
       {
-        srl.SendText("WiFi connection failed!");
+        DisplayPrint("WiFi connection failed!");
       }
     }
   }
@@ -136,15 +140,25 @@ void setup()
 
   display.init();
   display.setRotation(3); // 0:横向き, 1:縦向き, 2:横向き反転, 3:縦向き反転
-  display.fillScreen(TFT_RED);
+  // display.fillScreen(TFT_RED);
 
   LittleFS.begin();
   display.drawBmpFile(LittleFS, "/girl.bmp", 0, 0);
   display.setTextSize(2);
 
-  display.drawBmpFile(LittleFS, "/girl.bmp", 0, 0);
+  // display.drawBmpFile(LittleFS, "/girl.bmp", 0, 0);
+  mmTime = millis() + 1000;
+  DisplayPrint("WiFi connection started...");
+  fsWifi.Begin(); // WiFi接続を開始
 }
 void loop()
 {
+  unsigned long now = millis();
   GetSerialCMD();
+
+  if (now > mmTime)
+  {
+    mmTime = now + 1000;
+    printLocalTime();
+  }
 }

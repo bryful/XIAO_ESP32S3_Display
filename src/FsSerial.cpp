@@ -42,6 +42,6 @@ bool BrySerial::compHeader(const char *head, const char *header)
   bool ret = false;
   if ((strlen(header) < 4) || (strlen(head) < 4))
     return ret;
-  ret = ((head[0] != header[0]) && (head[1] != header[1]) && (head[2] != header[2]) && (head[3] != header[3]));
+  ret = ((head[0] == header[0]) && (head[1] == header[1]) && (head[2] == header[2]) && (head[3] == header[3]));
   return ret;
 }

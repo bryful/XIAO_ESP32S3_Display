@@ -10,7 +10,7 @@ bool FsWifi::Begin()
     WiFi.begin();
 
     int retry = 5;
-    while (isConnected())
+    while (!isConnected())
     {
         delay(500);
         retry--;
@@ -27,7 +27,7 @@ bool FsWifi::Begin()
 };
 bool FsWifi::Begin(const char *ssid, const char *password)
 {
-    if ((ssid == nullptr) || (password == nullptr))
+    if ((strlen(ssid) == 0) || (strlen(password) == 0))
     {
         return false;
     }
@@ -40,7 +40,7 @@ bool FsWifi::Begin(const char *ssid, const char *password)
     WiFi.begin(ssid, password);
 
     int retry = 20;
-    while (isConnected())
+    while (!isConnected())
     {
         delay(500);
         retry--;
