@@ -35,7 +35,6 @@ namespace FacePallet
         Line,
         Eye1,
         Eye2,
-        Eye3,
         EyeHi,
         EyeWhite,
         White,
@@ -46,7 +45,7 @@ namespace FacePallet
         Green,
         Yellow,
         Magenda,
-        SCyan
+        Cyan
 
     } PaletteType;
 };
@@ -106,37 +105,37 @@ private:
     int _HohoTop = 190;
     int _HohoRX = 90;
 
-    int _EyeRX = 90;
-
+    int _EyeRX = 80;
     int _EyeTop = 130;
 
     int _EyeEXRX = 80;
     int _EyeEXTop = 120;
 
-    int _MayuTop = 40;
     int _MayuRX = 80;
+    int _MayuTop = 40;
 
     int _EyeMode = EyeMode::CENTER;
     int _MouthMode = MouthMode::M2;
     lgfx::LGFX_Device *display;
     u_int16_t _SkinColor = 0xFDD2;
     u_int16_t palette[16] = {
-        0xFDD2,
-        0xDC1C,
-        0x38A3,
-        0x6861,
-        0xE828,
-        0xF5D9,
-        0xE7DF,
-        0xFFFF,
-        0xFCD9,
-        0x0,
-        0xD848,
-        0x153F,
-        0x23E0,
-        0xF76A,
-        0xE25F,
-        0x2FFE};
+        0xFDD2, // 00
+        0xDC1C, // 01
+        0x38A3, // 02
+        0x6861, // 03
+        0xE828, // 04
+        0xF5D9, // 05
+        0xE7DF, // 06
+        0xFFFF, // 07
+        0xFCD9, // 08
+        0x0,    // 09
+        0xD848, // 10
+        0x153F, // 11
+        0x23E0, // 12
+        0xF76A, // 13
+        0xE25F, // 14
+        0x2FFE  // 15
+    };
     // 目パチ用の裏画面
     lgfx::LGFX_Sprite *Comp;
 
@@ -164,6 +163,8 @@ private:
     void DrawHoho();
     void DrawEyeClose();
     void DrawEyeInt();
+    void DrawTemp();
+    void DrawInfo();
 
     long FaceModeTable[11] = {
         EyeMode::CENTER,
@@ -179,6 +180,11 @@ private:
         EyeMode::EX3};
 
 public:
+    float humidity = 0;
+    float temperature = 0;
+    String ipstr = "";
+    String tmStr = "";
+    String dht = "";
     Face();
     ~Face();
     void Begin(lgfx::LGFX_Device *d);

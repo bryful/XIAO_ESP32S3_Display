@@ -15,6 +15,7 @@ Face::Face()
         _HohoRX += 10;
     }
 }
+
 Face::~Face()
 {
     if (_isSetup == true)
@@ -214,6 +215,30 @@ void Face::Update()
     }
     Comp->pushSprite(0, 0);
 }
+void Face::DrawInfo()
+{
+    if (ipstr != "")
+    {
+        Comp->setCursor(5, 2);
+        Comp->setTextSize(2);
+        Comp->setTextColor(FacePallet::Green);
+        Comp->print(ipstr.c_str());
+    }
+    if (tmStr != "")
+    {
+        Comp->setCursor(5, 220);
+        Comp->setTextSize(2);
+        Comp->setTextColor(FacePallet::Red);
+        Comp->print(tmStr.c_str());
+    }
+    Comp->setTextSize(4);
+    Comp->setTextColor(FacePallet::Red);
+
+    Comp->setCursor(05, 180);
+    Comp->printf("T:%1.1f H:%1.1f\n", temperature, humidity);
+    //  Comp->setCursor(25, 200);
+    // Comp->printf("%s\n", dht);
+}
 
 void Face::Draw()
 {
@@ -224,6 +249,7 @@ void Face::Draw()
     DrawHoho();
     DrawMouth();
     DrawEye();
+    DrawInfo();
 }
 void Face::DrawHoho()
 {
@@ -332,6 +358,7 @@ void Face::DrawEyeBlink()
     DrawHoho();
     DrawMouth();
     DrawEyeClose();
+    DrawInfo();
     Update();
     delay(50);
 
@@ -340,11 +367,27 @@ void Face::DrawEyeBlink()
         DrawHoho();
         DrawMouth();
         DrawEyeInt();
+        DrawInfo();
         Update();
         delay(50);
     }
     DrawHoho();
     DrawMouth();
     DrawEye();
+    DrawInfo();
     Update();
+}
+void Face::DrawTemp()
+{
+    if (_isSetup == false)
+        return;
+    if ((temperature > 0) && (humidity > 0))
+    {
+        Comp->setTextSize(4);
+        Comp->setTextColor(FacePallet::Green);
+        Comp->setCursor(20, 80);
+        Comp->printf("t:%1.2f", temperature);
+        Comp->setCursor(20, 110);
+        Comp->printf("h:%1.2f", humidity);
+    }
 }
